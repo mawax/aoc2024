@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# 
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35521.163 d17.12
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aoc.Day1", "Aoc.Day1\Aoc.Day1.csproj", "{6AA12889-B0CC-4AE2-B080-F135C6859CDA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aoc.Day3", "Aoc.Day3\Aoc.Day3.csproj", "{324387D4-74F6-4EDF-B332-36BD9C08F2CC}"
@@ -10,6 +12,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aoc.Day4", "Aoc.Day4\Aoc.Day4.csproj", "{7D5A2FA1-6975-4B50-B77B-85B73E95370B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aoc.Day4.2", "Aoc.Day4.2\Aoc.Day4.2.csproj", "{3C1F4D4E-C27C-4390-8D80-C24362976954}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aoc.Day5", "Aoc.Day5\Aoc.Day5.csproj", "{0A76358B-7DE3-429F-8117-332BD96FA834}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,5 +41,12 @@ Global
 		{3C1F4D4E-C27C-4390-8D80-C24362976954}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3C1F4D4E-C27C-4390-8D80-C24362976954}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3C1F4D4E-C27C-4390-8D80-C24362976954}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0A76358B-7DE3-429F-8117-332BD96FA834}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A76358B-7DE3-429F-8117-332BD96FA834}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A76358B-7DE3-429F-8117-332BD96FA834}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A76358B-7DE3-429F-8117-332BD96FA834}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 EndGlobal
