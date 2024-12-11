@@ -1,72 +1,119 @@
 ﻿using System.Text;
 
-var input = File.ReadAllText("testinput.txt");
+var input = File.ReadAllText("input.txt");
 
-var index = 0;
+var id = 0;
 
 var blocks = new List<BlockFile>();
 for (var i = 0; i < input.Length; i++)
 {
     var c = input[i];
-    var number = Convert.ToInt32(c.ToString());
+    var blockCount = Convert.ToInt32(c.ToString());
+
+    if (blockCount == 0)
+        continue;
+
     if (i % 2 == 0)
     {
-        blocks.Add(new BlockFile(index, number, false));
+        blocks.Add(new BlockFile(id, blockCount, false));
 
-        index++;
+        id++;
     }
     else
     {
-        blocks.Add(new BlockFile(null, number, true));
+        blocks.Add(new BlockFile(null, blockCount, true));
     }
 }
 
 var blocksArray = blocks.ToArray();
-var sortedFiles = blocksArray.Skip(1).Where(x => !x.FreeSpace).OrderByDescending(x => x.Id).ToArray();
-var sortedFilesIndex = 0;
-for (var i = 0; i < blocks.Count; i++)
+
+var sortedFiles = blocksArray.Where(x => !x.FreeSpace)
+    .OrderByDescending(x => x.Id).ToList();
+
+while (sortedFiles.Count > 0)
 {
-    if (blocksArray[i].FreeSpace)
+    PrintBlocks(blocksArray);
+
+    var currentFile = sortedFiles[0];
+    var currentFileIndex = Array.FindIndex(blocksArray, x => x == currentFile);
+
+    for (var j = 0; j < blocksArray.Length; j++)
     {
-        if (sortedFilesIndex >= sortedFiles.Length)
+        if (currentFileIndex <= j)
         {
             break;
         }
 
-        var nextFile = sortedFiles[sortedFilesIndex];
-        while (nextFile.Blocks > blocksArray[i].Blocks && sortedFilesIndex < sortedFiles.Length - 1)
+        if (blocksArray[j].FreeSpace && blocksArray[j].Blocks >= currentFile.Blocks)
         {
-            nextFile = sortedFiles[sortedFilesIndex];
-            sortedFilesIndex++;
-            continue;
-        }
+            //Console.WriteLine($"Moving {currentFile.Id} to {j}, {currentFile.Blocks} blocks");
+            var freeSpace = blocksArray[j];
+            blocksArray[j] = currentFile;
+            blocksArray[currentFileIndex] = freeSpace;
 
-        var temp = blocksArray[i];
-        var indexOfItem = Array.FindIndex(blocksArray, x => x == nextFile);
-        blocksArray[i] = nextFile;
-        blocksArray[indexOfItem] = temp;
-        
-        sortedFilesIndex++;
+            var lengthDif = freeSpace.Blocks - currentFile.Blocks;
+            if (lengthDif > 0)
+            {
+                //Console.WriteLine($"Splitting freespace into {currentFile.Blocks} and {lengthDif}");
+
+                blocksArray[currentFileIndex] = freeSpace with { Blocks = currentFile.Blocks };
+                var tempList = blocksArray.ToList();
+                tempList.Insert(j + 1, new BlockFile(null, lengthDif, true));
+                blocksArray = tempList.ToArray();
+            }
+
+            break;
+        }
     }
+
+    sortedFiles.RemoveAt(0);
 }
+
+PrintBlocks(blocksArray);
 
 long checksum = 0;
 
-var newIndex = 0;
-foreach (var block in blocksArray)
+long fileIndex = 0;
+foreach (var file in blocksArray)
 {
-    if (!block.FreeSpace)
+    for (var block = 0; block < file.Blocks; block++)
     {
-        for (var j = 0; j < block.Blocks; j++)
+        if (!file.FreeSpace)
         {
-            checksum += (block.Id!.Value * newIndex) * block.Blocks;
-            newIndex++;
+            checksum += file.Id!.Value * (fileIndex);
         }
-    }
 
-    newIndex++;
+        fileIndex++;
+    }
 }
 
 Console.WriteLine("D9.2: " + checksum);
 
-record BlockFile(int? Id, int Blocks, bool FreeSpace);
+
+static void PrintBlocks(BlockFile[] blocksArray)
+{
+    //Console.WriteLine(BlocksToString(blocksArray));
+}
+
+static string BlocksToString(BlockFile[] blocksArray)
+{
+    var sb = new StringBuilder();
+    foreach (var block in blocksArray)
+    {
+        for (var i = 0; i < block.Blocks; i++)
+        {
+            if (block.FreeSpace)
+            {
+                sb.Append('.');
+            }
+            else
+            {
+                sb.Append(block.Id);
+            }
+        }
+    }
+
+    return (sb.ToString());
+}
+
+record BlockFile(long? Id, long Blocks, bool FreeSpace);

@@ -50,7 +50,6 @@ for (var i = 0; i < blocksArray.Length; i++)
     var block = blocksArray[i];
     if (!block.FreeSpace)
     {
-        ;
         checksum += block.Id!.Value * i;
     }
 }
